@@ -1,3 +1,5 @@
+@import url('https://cdnjs.cloudflare.com/ajax/libs/react-datepicker/2.8.0/react-datepicker.min.css');
+
 .App {
   text-align: center;
   display: flex;
@@ -14,4 +16,9 @@ input {
 
 .rating {
   margin-bottom: 1em;
+}
+
+.item {
+  display: flex;
+  justify-items:flex-start;
 }
