@@ -1,11 +1,27 @@
 @import url('https://cdnjs.cloudflare.com/ajax/libs/react-datepicker/2.8.0/react-datepicker.min.css');
 
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
 .App {
-  text-align: center;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
+}
+
+.movie-grid {
+  margin-top: 40px;
+  display: flex;
+  gap: 3em;
+  flex-wrap: wrap;
+}
+
+.movie-grid > * {
+  flex: 1 300px;  
+  display: flex;
+  justify-content: center;
 }
 
 input {
@@ -16,9 +32,4 @@ input {
 
 .rating {
   margin-bottom: 1em;
-}
-
-.item {
-  display: flex;
-  justify-items:flex-start;
 }

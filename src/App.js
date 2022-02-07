@@ -3,10 +3,13 @@ import moment from 'moment'
 import axios from 'axios'
 import { Rating } from 'react-simple-star-rating'
 import DatePicker from 'react-date-picker'
+import Card from './components/Card'
+import EditableCard from './components/EditableCard'
 
 function App() {
 
   const [movieName, setMovieName] = useState('');
+  const [editable, setEditable] = useState(-1);
   const [newName, setNewName] = useState('');
   const [movieReview, setMovieReview] = useState('');
   const [rating, setRating] = useState(0);
@@ -15,6 +18,17 @@ function App() {
   const [list, setList] = useState([]);
   const [search, setSearch] = useState('');
   const [order, setOrder] = useState('ASC');
+
+  const handleEdit = (id) => {
+    if(editable === id)
+    {
+      setEditable(-1);
+    }
+    else
+    {
+      setEditable(id);
+    }
+  }
 
   const handleRating = (rate) => {
     setRating(rate)
@@ -96,32 +110,49 @@ function App() {
         transition={true}
       />
       <button onClick={addReview}>Add to reviews</button>
-      <button onClick={() => sorting('movieName')}>Sort by name</button>
+      <button onClick={() => sorting('movieName')}>Sort by name {order}</button>
       <input type = "text" placeholder='Search...' onChange={(e) => {setSearch(e.target.value)}}/>
-      {list.filter((movie) => {
-        if (search === "")
-        {
-            return movie;
-        } 
-        else if(movie.movieName.toLowerCase().includes(search.toLowerCase()))
-        {
-            return movie;
-        }
-      }).map((movie, key) => (
-          <div className = "item" key={key}>
-             <h1>{movie.movieName}</h1>
-             <p>{movie.review}</p>
-             <Rating 
-              ratingValue={movie.rating}
-              allowHalfIcon={true}
-              readonly={true}
+      <div className='movie-grid'>
+        {list.filter((movie) => {
+          if (search === "")
+          {
+              return movie;
+          } 
+          else if(movie.movieName.toLowerCase().includes(search.toLowerCase()))
+          {
+              return movie;
+          }
+        }).map((movie, key) => (
+          <div>
+            {(editable === movie._id) ? 
+               <EditableCard 
+               key = {key}
+               movie = {movie}
+               handleEdit = {handleEdit}
+               setNewName = {setNewName}
+            /> :
+            <Card 
+            key = {key}
+            movie = {movie}
+            handleEdit = {handleEdit}
             />
-             <h1>{moment(movie.watchDate).format("MM/DD/YY")}</h1>
-            <input type = "text" placeHolder = "Change Name"  onChange={(e) => {setNewName(e.target.value)}}/> 
-            <button onClick={() => updateName(movie._id)}>Update</button>
-            <button onClick={() => deleteReview(movie._id)}>Delete</button>
+            }
           </div>
-      ))}
+        //    <div className = "item" key={key}>
+        //       <h1>{movie.movieName}</h1>
+        //       <h1>{movie.review}</h1>
+        //       <Rating 
+        //        ratingValue={movie.rating}
+        //        allowHalfIcon={true}
+        //        readonly={true}
+        //      />
+        //       <h1>{moment(movie.watchDate).format("MM/DD/YY")}</h1>
+        //      <input type = "text" placeHolder = "Change Name"  onChange={(e) => {setNewName(e.target.value)}}/> 
+        //      <button onClick={() => updateName(movie._id)}>Update</button>
+        //      <button onClick={() => deleteReview(movie._id)}>Delete</button>
+        //    </div>
+        ))}
+      </div> 
     </div>
   );
 }
